@@ -47,7 +47,8 @@ module.exports = {
         fs.writeFileSync(filePath, JSON.stringify(nwebData, null, 2), "utf-8");
 
         await interaction.reply({
-          content: `${interaction.user.displayName} 取消訂閱作者: ${author}`,
+          content: `你已成功取消訂閱作者: ${author}`,
+          ephemeral: true,
         });
       } else {
         await interaction.reply({

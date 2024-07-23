@@ -1,4 +1,4 @@
-const { client, Client } = require("discord.js");
+const { Client } = require("discord.js");
 module.exports = {
   name: "ready",
   once: true,
@@ -7,6 +7,25 @@ module.exports = {
    */
   async execute(client) {
     console.log(`${client.user.tag} is logged in and online!!`);
-    setTimeout(client.nwebAnnouncement, 3 * 1000);
+
+    try {
+      console.log("開始檢查更新");
+      await client.nwebAnnouncement();
+      await client.asmrAnnouncement();
+      console.log(`檢查完成`);
+    } catch (error) {
+      console.error("Error during initial comic update check:", error);
+    }
+
+    setInterval(async () => {
+      try {
+        console.log("檢查更新");
+        await client.nwebAnnouncement;
+        await client.asmrAnnouncement;
+        console.log(`檢查完成`);
+      } catch (error) {
+        console.error("Error checking for comic updates:", error);
+      }
+    }, 3600000);
   },
 };

@@ -9,7 +9,7 @@ module.exports = (client) => {
    * @param {string} id
    * @return {Promise<void>}
    */
-  client.nwebChangeId = async (interaction, author, id) => {
+  client.nwebChangeId = async (interaction, author, id, channelId) => {
     try {
       const nwebDir = path.resolve(__dirname, "../../../resource/nweb");
       const folderContents = fs.readdirSync(nwebDir);
@@ -24,6 +24,7 @@ module.exports = (client) => {
           const data = JSON.parse(jsonData);
 
           let authorFound = false;
+          data.channel = channelId;
           for (const entry of data.sub) {
             if (entry.author == author && entry.id == id) {
               return;

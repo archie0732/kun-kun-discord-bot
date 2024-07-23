@@ -31,7 +31,7 @@ module.exports = (client) => {
     const rest = new REST({ version: "10" }).setToken(process.env.DEV_TOKEN);
 
     try {
-      await rest.put(Routes.applicationCommands(clientId), {
+      await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
         body: client.commandArray,
       });
       /*
