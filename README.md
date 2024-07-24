@@ -1,4 +1,4 @@
-# kun-kun-discord-bot (test-version)
+# kun-kun-discord-bot 
 
 for練習用的蔡坤坤機器人  
 code 開源主要是為了裝逼  
