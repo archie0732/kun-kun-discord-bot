@@ -78,9 +78,7 @@ async function sendMessage(client, guildID, channelID, asmrData) {
     const channel = await guild.channels.fetch(channelID);
 
     if (!asmrData) {
-      await channel.send({
-        content: "出現抓取錯誤",
-      });
+      console.log(`asmrone - 網站發生問題`);
       return;
     }
     const embed = new EmbedBuilder()
@@ -88,7 +86,7 @@ async function sendMessage(client, guildID, channelID, asmrData) {
         name: `📢 ${client.user.tag} - 您訂閱的標籤更新了`,
         iconURL: client.user.displayAvatarURL(),
       })
-      .setTitle(asmrData.title)
+      .setTitle(asmrData.title || asmrData.id)
       .setURL(asmrData["ASMR-one-url"])
       .setThumbnail(client.user.avatarURL())
       .setDescription(
@@ -114,7 +112,9 @@ async function sendMessage(client, guildID, channelID, asmrData) {
         }
       )
       .setImage(asmrData.cover)
-      .setFooter({ text: "aaaaaa測試用" });
+      .setFooter({
+        text: `本功能包含使用該網站的api相關資料，請遵守該網站之規範(不得任何上用行為)`,
+      });
 
     await channel.send({ embeds: [embed] });
   } catch (error) {
@@ -139,9 +139,14 @@ module.exports = (client) => {
       for (const entry of data.data) {
         const asmrData = await searchASMR_byName(entry.tag);
         if (asmrData && entry.id !== asmrData.id) {
+          await sendMessage(client, data.guild, data.channel, asmrData);
+          console.log(`asmrone - 發現新更新內容: ${asmrData.id}`);
           entry.id = asmrData.id;
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
-          await sendMessage(client, data.guild, data.channel, asmrData);
+          console.log(`asmrone - 檔案寫入完成: ${filePath}`);
+        } else if (!asmrData) {
+          console.log(`asmrone - 訪問網站時發生問題`);
+          return;
         }
       }
     }

@@ -19,6 +19,7 @@ module.exports = (client) => {
             const latestComic = await client.nwebCrawler(entry.author);
 
             if (latestComic && latestComic.id != entry.id) {
+              console.log(`nhentai - 發現新的內容: ${latestComic.id}`);
               await client.sendAnnoucement(
                 client,
                 latestComic,
@@ -32,8 +33,10 @@ module.exports = (client) => {
                 JSON.stringify(nwebData, null, 2),
                 "utf-8"
               );
+              console.log(`nhentai - 檔案寫入完成: ${filePath}`);
             } else if (!latestComic) {
               console.log(`No data fetched for author: ${entry.author}`);
+              return;
             }
           } catch (innerError) {
             console.error(
